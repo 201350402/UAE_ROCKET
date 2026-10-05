@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UAE Space Mission — System & Surroundings</title>
+<style>
+:root{--ink:#18222c;--muted:#66717c;--line:#d8dee4;--panel:#f7f7f7;--green:#16845b;--softgreen:#f2faf6}
+*{box-sizing:border-box}body{margin:0;background:white;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+main{max-width:900px;margin:auto;padding:18px}.card{border:1px solid var(--line);border-radius:16px;padding:20px;margin:14px 0;background:#fff}
+.header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.header h2{margin:0;font-size:20px}.header p{margin:8px 0 0;line-height:1.5}.rocketemoji{font-size:42px}
+.scene{margin-top:16px;background:#fafafa;border-radius:15px;padding:10px}
+svg{display:block;width:100%;height:auto}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+button{min-height:48px;padding:10px 12px;border:1px solid #bfc7ce;border-radius:10px;background:#fff;color:var(--ink);font:inherit;cursor:pointer}
+button:hover,button:focus{border-color:var(--green);background:#f4faf7;outline:none}.feedback{min-height:24px;margin:12px 0 0;font-weight:600}
+.hidden{display:none}.reveal{border:2px solid var(--green);background:var(--softgreen)}.terms{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.term{background:white;border:1px solid var(--line);border-radius:12px;padding:14px}.term h3{margin:0 0 8px}.boundary{margin-top:12px;background:#fff;border-radius:10px;padding:12px;text-align:center}
+.actions{display:flex;justify-content:flex-end;margin:14px 0}.restart{background:#18222c;color:#fff;border-color:#18222c}
+@media(max-width:650px){main{padding:10px}.card{padding:15px}.choices,.terms{grid-template-columns:1fr}.header{align-items:center}}
+</style>
+</head>
+<body>
+<main>
+<section class="card">
+ <div class="header">
+  <div>
+   <h2>🇦🇪 UAE Space Mission</h2>
+   <p>You are part of a UAE science team observing a rocket launch. Your team wants to study the <strong>energy change in the rocket engine</strong>.</p>
+  </div>
+  <div class="rocketemoji" aria-hidden="true">🚀</div>
+ </div>
+
+ <div class="scene">
+  <svg viewBox="0 0 650 300" role="img" aria-label="Rocket with engine, surrounding air and launch area">
+   <rect x="0" y="245" width="650" height="55" fill="#e8e8e8"/>
+   <path d="M325 32 C285 72 282 157 292 205 L358 205 C368 157 365 72 325 32Z" fill="#fff" stroke="#151515" stroke-width="4"/>
+   <circle cx="325" cy="105" r="21" fill="#e56cab" stroke="#151515" stroke-width="3"/>
+   <path d="M292 172 L255 218 L294 207Z M358 172 L395 218 L356 207Z" fill="#55c8c1" stroke="#151515" stroke-width="3"/>
+   <rect x="299" y="183" width="52" height="34" rx="5" fill="#65ce73" stroke="#151515" stroke-width="3"/>
+   <path d="M306 218 Q325 275 344 218" fill="#ffd465"/>
+   <text x="325" y="204" text-anchor="middle" font-size="13" fill="#111">ENGINE</text>
+   <text x="72" y="70" font-size="17" fill="#66717c">air</text>
+   <text x="485" y="270" font-size="16" fill="#111">launch area</text>
+  </svg>
+ </div>
+</section>
+
+<section class="card" id="mission1">
+ <h2>Mission 1 — Choose your focus</h2>
+ <p>Your team is studying the energy change happening <strong>inside the engine</strong>. What should scientists focus on?</p>
+ <div class="choices">
+  <button data-m1="air">🌬️ Air around rocket</button>
+  <button data-m1="engine">🔥 Engine reaction</button>
+  <button data-m1="ground">Launch area</button>
+ </div>
+ <p id="f1" class="feedback" aria-live="polite"></p>
+</section>
+
+<section class="card hidden" id="mission2">
+ <h2>Mission 2 — Look outside your focus</h2>
+ <p>Which things are <strong>outside</strong> the engine reaction?</p>
+ <div class="choices" style="grid-template-columns:repeat(2,1fr)">
+  <button data-m2="outside">Rocket body, air and environment</button>
+  <button data-m2="reaction">Only the reacting matter</button>
+ </div>
+ <p id="f2" class="feedback" aria-live="polite"></p>
+</section>
+
+<section class="card reveal hidden" id="reveal">
+ <h2>Mission discovery 🔍</h2>
+ <p>Scientists give these parts special names:</p>
+ <div class="terms">
+  <div class="term"><h3>🔥 SYSTEM</h3><p>The matter or process chosen for study.</p><p><strong>Our system:</strong> the reaction in the engine.</p></div>
+  <div class="term"><h3>⭕ BOUNDARY</h3><p>The real or imaginary separation between the system and everything outside it.</p></div>
+  <div class="term"><h3>🌍 SURROUNDINGS</h3><p>Everything outside the chosen system that can interact with it.</p></div>
+ </div>
+</section>
+
+<section class="card hidden" id="mission3">
+ <h2>Final mission 🚀</h2>
+ <p>During the reaction, energy moves from the engine system to its surroundings. What might you observe?</p>
+ <div class="choices">
+  <button data-m3="cold">❄️ Only ice forming</button>
+  <button data-m3="energy">🔥 Heat and other energy transferred outward</button>
+  <button data-m3="none">No interaction</button>
+ </div>
+ <p id="f3" class="feedback" aria-live="polite"></p>
+</section>
+
+<div class="actions"><button id="reset" class="restart">Restart mission</button></div>
+</main>
+<script>
+(()=>{
+ const m2=document.getElementById('mission2'), reveal=document.getElementById('reveal'), m3=document.getElementById('mission3');
+ const f1=document.getElementById('f1'), f2=document.getElementById('f2'), f3=document.getElementById('f3');
+ document.querySelectorAll('[data-m1]').forEach(b=>b.addEventListener('click',()=>{
+  if(b.dataset.m1==='engine'){f1.textContent='✓ Good choice. This is the matter/process our scientists chose to investigate.';m2.classList.remove('hidden');}
+  else f1.textContent='Try again. The mission says the scientists want to study what happens inside the engine.';
+ }));
+ document.querySelectorAll('[data-m2]').forEach(b=>b.addEventListener('click',()=>{
+  if(b.dataset.m2==='outside'){f2.textContent='✓ Correct. These are outside our chosen focus.';reveal.classList.remove('hidden');m3.classList.remove('hidden');}
+  else f2.textContent='That is still part of what we chose to study. Look for what is outside it.';
+ }));
+ document.querySelectorAll('[data-m3]').forEach(b=>b.addEventListener('click',()=>{
+  f3.textContent=b.dataset.m3==='energy'?'✓ Mission complete! Energy can cross the boundary between a system and its surroundings.':'Think again: if energy leaves our chosen system, where does it go?';
+ }));
+ document.getElementById('reset').addEventListener('click',()=>{
+  f1.textContent='';f2.textContent='';f3.textContent='';
+  m2.classList.add('hidden');reveal.classList.add('hidden');m3.classList.add('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+ });
+})();
+</script>
+</body>
+</html>
